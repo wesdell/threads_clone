@@ -70,3 +70,35 @@ export const fetchThreads = async (pageNumber = 1, pageSize = 20) => {
     throw new Error(`Failed to fetch threads: ${e.message}`);
   }
 };
+
+export const fetchThreadById = async (id: string) => {
+  try {
+    await connectToDB();
+    const thread = await Thread.findById(id)
+      .populate({ path: "author", model: User, select: "_id id name image" })
+      .populate({
+        path: "children",
+        populate: [
+          {
+            path: "author",
+            model: User,
+            select: "_id id name parentId image",
+          },
+          {
+            path: "children",
+            model: Thread,
+            populate: {
+              path: "author",
+              model: User,
+              select: "_id id name parentId image",
+            },
+          },
+        ],
+      })
+      .exec();
+
+    return thread;
+  } catch (error: any) {
+    throw new Error(`Error fetching thread: ${error.message}`);
+  }
+};
