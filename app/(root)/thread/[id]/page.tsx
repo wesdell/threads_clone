@@ -3,6 +3,7 @@ import { currentUser } from "@clerk/nextjs";
 import { fetchUser } from "@/lib/actions/user.actions";
 import { fetchThreadById } from "@/lib/actions/thread.actions";
 import { ThreadCard } from "@/components/cards";
+import { Comment } from "@/components/forms";
 
 export default async function ThreadByIdPage({
   params,
@@ -39,6 +40,29 @@ export default async function ThreadByIdPage({
           createdAt={thread.createdAt}
           comments={thread.children}
         />
+      </div>
+      <div className="mt-7">
+        <Comment
+          threadId={thread.id}
+          currentUserId={JSON.stringify(userInfo._id)}
+          currentUserImg={userInfo.image}
+        />
+      </div>
+      <div className="mt-10">
+        {thread.children.map((item: any) => (
+          <ThreadCard
+            key={item._id}
+            id={item.id}
+            currentUserId={user?.id || ""}
+            parentId={item.parentId}
+            content={item.text}
+            author={item.author}
+            community={item.community}
+            createdAt={item.createdAt}
+            comments={item.children}
+            isComment
+          />
+        ))}
       </div>
     </section>
   );
