@@ -3,8 +3,12 @@ import { fetchThreads } from "@/lib/actions/thread.actions";
 import { ThreadCard } from "@/components/cards";
 
 export default async function Home() {
-  const { threads } = await fetchThreads(1, 30);
   const user = await currentUser();
+  if (!user) {
+    return null;
+  }
+
+  const { threads } = await fetchThreads(1, 30);
 
   return (
     <>
@@ -18,7 +22,7 @@ export default async function Home() {
               <ThreadCard
                 key={thread._id}
                 id={thread.id}
-                currentUserId={user?.id || ""}
+                currentUserId={user.id}
                 parentId={thread.parentId}
                 content={thread.text}
                 author={thread.author}

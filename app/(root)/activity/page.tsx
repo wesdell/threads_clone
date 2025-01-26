@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { currentUser } from "@clerk/nextjs";
-import { fetchActivity, fetchUser } from "@/lib/actions/user.actions";
+import { getActivity, fetchUser } from "@/lib/actions/user.actions";
 
 export default async function Activity() {
   const user = await currentUser();
@@ -15,7 +15,7 @@ export default async function Activity() {
     redirect("/onboarding");
   }
 
-  const activity = await fetchActivity(userInfo._id);
+  const activity = await getActivity(userInfo._id);
 
   return (
     <section>
@@ -23,7 +23,7 @@ export default async function Activity() {
       <section className="mt-10 flex flex-col gap-5">
         {activity.length > 0 ? (
           <>
-            {activity.map((act) => (
+            {activity.map((act: any) => (
               <Link key={act._id} href={`/thread/${act.parentId}`}>
                 <article className="activity-card">
                   <Image

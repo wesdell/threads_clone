@@ -2,9 +2,7 @@
 
 import { FilterQuery, SortOrder } from "mongoose";
 import { connectToDB } from "../mongoose";
-import Community from "../models/community.model";
-import Thread from "../models/thread.model";
-import User from "../models/user.model";
+import { Community, Thread, User } from "../models";
 
 export const createCommunity = async (
   id: string,
@@ -59,14 +57,14 @@ export const fetchCommunityDetails = async (id: string) => {
         select: "name username image _id id",
       },
     ]);
-  } catch (error) {
+  } catch (error: any) {
     // Handle any errors
-    console.error("Error fetching community details:", error);
+    console.error("Error fetching community details:", error.message);
     throw error;
   }
 };
 
-export const fetchCommunityPosts = async (id: string) => {
+export const fetchCommunityThreads = async (id: string) => {
   try {
     await connectToDB();
 
@@ -90,7 +88,7 @@ export const fetchCommunityPosts = async (id: string) => {
         },
       ],
     });
-  } catch (error: any) {
+  } catch (error) {
     // Handle any errors
     console.error("Error fetching community posts:", error);
     throw error;

@@ -32,7 +32,7 @@ export default async function ThreadByIdPage({
         <ThreadCard
           key={thread._id}
           id={thread.id}
-          currentUserId={user?.id || ""}
+          currentUserId={user.id}
           parentId={thread.parentId}
           content={thread.text}
           author={thread.author}
@@ -52,8 +52,8 @@ export default async function ThreadByIdPage({
         {thread.children.map((item: any) => (
           <ThreadCard
             key={item._id}
-            id={item.id}
-            currentUserId={user?.id || ""}
+            id={item._id}
+            currentUserId={user.id}
             parentId={item.parentId}
             content={item.text}
             author={item.author}
